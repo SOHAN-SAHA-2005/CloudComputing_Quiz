@@ -55,10 +55,12 @@
             <p class="final-score-text">Your final score is: <span id="final-score"></span> out of <span id="final-attempted"></span> attempted questions.</p>
             <div id="unattempted-text" class="unattempted-box"></div>
             
-            <p style="margin-top: 25px;">Please submit your feedback or details via our form:</p>
-            <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn primary-btn form-link">Open Google Form</a>
-            <br><br>
-            <button class="btn secondary-btn" onclick="location.reload()">Back to Main Menu</button>
+            <div class="button-group" style="margin-top: 25px; border-top: 2px solid #e4e6eb; padding-top: 20px;">
+                <button id="next-assignment-btn" class="btn primary-btn" style="display:none; width: 100%; text-align: center;" onclick="startNextAssignment()">Continue to Next Assignment</button>
+                <button class="btn secondary-btn" style="width: 100%; text-align: center;" onclick="returnToSetup()">Choose a Different Assignment</button>
+            </div>
+            
+            
         </div>
     </div>
     <script src="script.js"></script>

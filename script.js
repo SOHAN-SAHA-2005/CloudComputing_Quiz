@@ -1390,16 +1390,13 @@ Correct Answer: B
 // 2. PARSER LOGIC
 function parseData(text) {
     const quizData = [];
-    // We split by "QUESTION \d+:" but we KEEP the delimiter to extract the actual number
     const blocks = text.split(/(?=QUESTION\s*\d+:)/i).filter(b => b.trim().length > 0);
 
     blocks.forEach(block => {
-        // Strip out the tags
         const lines = block.split('\n')
             .map(l => l.replace(/^\[(?:source|cite):\s*\d+\]\s*/i, '').trim())
             .filter(l => l.length > 0);
 
-        // Extract the actual question number from the block
         let qNum = 0;
         const qNumMatch = block.match(/QUESTION\s*(\d+):/i);
         if (qNumMatch) {
@@ -1412,7 +1409,6 @@ function parseData(text) {
         let explanationText = '';
         let state = 'q'; 
 
-        // Strip the literal "QUESTION X:" from the text so it doesn't double print
         if (lines[0].match(/^QUESTION\s*\d+:/i)) {
             lines.shift();
         }
@@ -1469,7 +1465,6 @@ function parseData(text) {
              else correctIndices.push(0);
         }
 
-        // Only add if it's a valid question
         if (qNum > 0) {
             quizData.push({
                 qNum: qNum,
@@ -1481,14 +1476,13 @@ function parseData(text) {
         }
     });
 
-    // CRITICAL FIX: Sort the questions numerically. 
-    // The raw text had Q80 next to Q10, this forces them into proper order!
     quizData.sort((a, b) => a.qNum - b.qNum);
     return quizData;
 }
 
 const allQuizData = parseData(rawData);
-let currentQuizSet = []; // This will hold the specific assignment selected
+let currentQuizSet = []; 
+let currentAssignmentValue = 'all'; // Tracks which assignment we are currently on
 
 // 3. QUIZ STATE
 let currentQ = 0;
@@ -1496,9 +1490,11 @@ let score = 0;
 let attemptedCount = 0; 
 let selectedIdx = null;
 
-// 4. SETUP LOGIC
-function startQuiz() {
-    const selection = document.getElementById('assignment-select').value;
+// 4. SETUP & NAVIGATION LOGIC
+function startQuiz(selectionParam = null) {
+    // Determine which assignment to load (either passed in directly, or from the dropdown)
+    const selection = selectionParam !== null ? selectionParam : document.getElementById('assignment-select').value;
+    currentAssignmentValue = selection;
     
     if (selection === 'all') {
         currentQuizSet = allQuizData;
@@ -1506,26 +1502,38 @@ function startQuiz() {
         const assignmentNumber = parseInt(selection, 10);
         const startIndex = assignmentNumber * 10;
         const endIndex = startIndex + 10;
-        
-        // Grab just the 10 questions for this specific assignment
         currentQuizSet = allQuizData.slice(startIndex, endIndex);
     }
 
-    // Reset stats
+    // Reset Tracking Stats
     currentQ = 0;
     score = 0;
     attemptedCount = 0;
     document.getElementById('score').innerText = score;
     document.getElementById('attempted').innerText = attemptedCount;
 
-    // Switch UI
+    // Toggle UI Visibility
     document.getElementById('setup-area').style.display = 'none';
+    document.getElementById('result-area').style.display = 'none';
     document.getElementById('quiz-area').style.display = 'block';
 
     loadQuestion();
 }
 
-// 5. UI LOGIC
+function startNextAssignment() {
+    const nextValue = parseInt(currentAssignmentValue, 10) + 1;
+    // Automatically update the dropdown to match the new assignment
+    document.getElementById('assignment-select').value = nextValue.toString();
+    // Start the next assignment
+    startQuiz(nextValue.toString());
+}
+
+function returnToSetup() {
+    document.getElementById('result-area').style.display = 'none';
+    document.getElementById('setup-area').style.display = 'block';
+}
+
+// 5. QUIZ ENGINE LOGIC
 function loadQuestion() {
     selectedIdx = null;
     
@@ -1541,7 +1549,6 @@ function loadQuestion() {
 
     const q = currentQuizSet[currentQ];
     
-    // Show which question out of the set we are on, plus the actual document question number
     document.getElementById('question-tracker').innerText = `Question ${currentQ + 1} of ${currentQuizSet.length}`;
     document.getElementById('question').innerHTML = `Q${q.qNum}. ${q.q}`;
     
@@ -1571,9 +1578,7 @@ function submitAnswer() {
     const isCorrect = q.a.includes(selectedIdx);
 
     attemptedCount++;
-    if (isCorrect) {
-        score++;
-    }
+    if (isCorrect) { score++; }
     
     document.getElementById('score').innerText = score;
     document.getElementById('attempted').innerText = attemptedCount;
@@ -1613,5 +1618,13 @@ function finishQuiz() {
         unattemptedText.style.display = 'block';
     } else {
         unattemptedText.style.display = 'none'; 
+    }
+
+    // Logic for "Continue to Next Assignment" button
+    const nextBtn = document.getElementById('next-assignment-btn');
+    if (currentAssignmentValue !== 'all' && parseInt(currentAssignmentValue, 10) < 12) {
+        nextBtn.style.display = 'inline-block'; // Show if they aren't on the final assignment
+    } else {
+        nextBtn.style.display = 'none'; // Hide if they did 'all' or are on assignment 12
     }
 }
