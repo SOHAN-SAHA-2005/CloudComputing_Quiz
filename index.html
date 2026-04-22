@@ -12,28 +12,53 @@
             <h2>NPTEL Cloud Computing Quiz</h2>
             <div class="score-board">Score: <span id="score">0</span> / <span id="attempted">0</span> Attempted</div>
         </div>
+
+        <div id="setup-area">
+            <h3>Configure Your Quiz</h3>
+            <p>Select which questions you want to practice:</p>
+            <select id="assignment-select" class="form-select">
+                <option value="all">All Questions (Q1 - Q130)</option>
+                <option value="0">Assignment 0 (Q1 - Q10)</option>
+                <option value="1">Assignment 1 (Q11 - Q20)</option>
+                <option value="2">Assignment 2 (Q21 - Q30)</option>
+                <option value="3">Assignment 3 (Q31 - Q40)</option>
+                <option value="4">Assignment 4 (Q41 - Q50)</option>
+                <option value="5">Assignment 5 (Q51 - Q60)</option>
+                <option value="6">Assignment 6 (Q61 - Q70)</option>
+                <option value="7">Assignment 7 (Q71 - Q80)</option>
+                <option value="8">Assignment 8 (Q81 - Q90)</option>
+                <option value="9">Assignment 9 (Q91 - Q100)</option>
+                <option value="10">Assignment 10 (Q101 - Q110)</option>
+                <option value="11">Assignment 11 (Q111 - Q120)</option>
+                <option value="12">Assignment 12 (Q121 - Q130)</option>
+            </select>
+            <br>
+            <button class="btn primary-btn" onclick="startQuiz()" style="margin-top: 20px; width: 100%;">Start Quiz</button>
+        </div>
         
-        <div id="quiz-area">
+        <div id="quiz-area" style="display:none;">
+            <div id="question-tracker" style="color: #666; margin-bottom: 10px; font-weight: bold;"></div>
             <div id="question" class="question-text">Loading questions...</div>
             <div id="options" class="options-container"></div>
             
             <div class="button-group">
                 <button id="submit-btn" class="btn primary-btn" disabled onclick="submitAnswer()">Submit Answer</button>
                 <button id="next-btn" class="btn secondary-btn" style="display:none;" onclick="nextQuestion()">Next Question</button>
-                <button id="finish-btn" class="btn danger-btn" onclick="finishQuiz()">Finish Quiz Early</button>
+                <button id="finish-btn" class="btn danger-btn" onclick="finishQuiz()">Finish Set Early</button>
             </div>
             
             <div id="explanation" class="explanation-box" style="display:none;"></div>
         </div>
         
         <div id="result-area" style="display:none;">
-            <h3>Quiz Complete!</h3>
+            <h3>Quiz Set Complete!</h3>
             <p class="final-score-text">Your final score is: <span id="final-score"></span> out of <span id="final-attempted"></span> attempted questions.</p>
             <div id="unattempted-text" class="unattempted-box"></div>
             
-            
+            <p style="margin-top: 25px;">Please submit your feedback or details via our form:</p>
+            <a href="YOUR_GOOGLE_FORM_LINK_HERE" target="_blank" class="btn primary-btn form-link">Open Google Form</a>
             <br><br>
-            <button class="btn secondary-btn" onclick="location.reload()">Restart Quiz</button>
+            <button class="btn secondary-btn" onclick="location.reload()">Back to Main Menu</button>
         </div>
     </div>
     <script src="script.js"></script>

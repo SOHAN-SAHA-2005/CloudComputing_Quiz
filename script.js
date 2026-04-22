@@ -1387,22 +1387,35 @@ D) Eliminates need for base stations
 Correct Answer: B
 `;
 
-// 2. PARSER LOGIC (Updated to strip citation tags automatically)
+// 2. PARSER LOGIC
 function parseData(text) {
     const quizData = [];
-    const blocks = text.split(/QUESTION\s*\d+:/i).slice(1);
+    // We split by "QUESTION \d+:" but we KEEP the delimiter to extract the actual number
+    const blocks = text.split(/(?=QUESTION\s*\d+:)/i).filter(b => b.trim().length > 0);
 
     blocks.forEach(block => {
-        // Here is the fix: It looks for tags like [cite: 3] or and removes them
+        // Strip out the tags
         const lines = block.split('\n')
             .map(l => l.replace(/^\[(?:source|cite):\s*\d+\]\s*/i, '').trim())
             .filter(l => l.length > 0);
+
+        // Extract the actual question number from the block
+        let qNum = 0;
+        const qNumMatch = block.match(/QUESTION\s*(\d+):/i);
+        if (qNumMatch) {
+            qNum = parseInt(qNumMatch[1], 10);
+        }
 
         let qText = '';
         let options = [];
         let correctText = '';
         let explanationText = '';
         let state = 'q'; 
+
+        // Strip the literal "QUESTION X:" from the text so it doesn't double print
+        if (lines[0].match(/^QUESTION\s*\d+:/i)) {
+            lines.shift();
+        }
 
         lines.forEach(line => {
             if (state === 'q') {
@@ -1456,29 +1469,67 @@ function parseData(text) {
              else correctIndices.push(0);
         }
 
-        quizData.push({
-            q: qText,
-            o: options,
-            a: correctIndices,
-            e: explanationText || "No detailed explanation provided for this question."
-        });
+        // Only add if it's a valid question
+        if (qNum > 0) {
+            quizData.push({
+                qNum: qNum,
+                q: qText,
+                o: options,
+                a: correctIndices,
+                e: explanationText || "No detailed explanation provided for this question."
+            });
+        }
     });
+
+    // CRITICAL FIX: Sort the questions numerically. 
+    // The raw text had Q80 next to Q10, this forces them into proper order!
+    quizData.sort((a, b) => a.qNum - b.qNum);
     return quizData;
 }
 
-const quizData = parseData(rawData);
+const allQuizData = parseData(rawData);
+let currentQuizSet = []; // This will hold the specific assignment selected
 
-// 3. QUIZ UI LOGIC
+// 3. QUIZ STATE
 let currentQ = 0;
 let score = 0;
 let attemptedCount = 0; 
 let selectedIdx = null;
 
+// 4. SETUP LOGIC
+function startQuiz() {
+    const selection = document.getElementById('assignment-select').value;
+    
+    if (selection === 'all') {
+        currentQuizSet = allQuizData;
+    } else {
+        const assignmentNumber = parseInt(selection, 10);
+        const startIndex = assignmentNumber * 10;
+        const endIndex = startIndex + 10;
+        
+        // Grab just the 10 questions for this specific assignment
+        currentQuizSet = allQuizData.slice(startIndex, endIndex);
+    }
+
+    // Reset stats
+    currentQ = 0;
+    score = 0;
+    attemptedCount = 0;
+    document.getElementById('score').innerText = score;
+    document.getElementById('attempted').innerText = attemptedCount;
+
+    // Switch UI
+    document.getElementById('setup-area').style.display = 'none';
+    document.getElementById('quiz-area').style.display = 'block';
+
+    loadQuestion();
+}
+
+// 5. UI LOGIC
 function loadQuestion() {
     selectedIdx = null;
     
-    // Check if we reached the end naturally
-    if (currentQ >= quizData.length) {
+    if (currentQ >= currentQuizSet.length) {
         finishQuiz();
         return;
     }
@@ -1488,8 +1539,11 @@ function loadQuestion() {
     document.getElementById('next-btn').style.display = 'none';
     document.getElementById('explanation').style.display = 'none';
 
-    const q = quizData[currentQ];
-    document.getElementById('question').innerHTML = `${currentQ + 1}. ${q.q}`;
+    const q = currentQuizSet[currentQ];
+    
+    // Show which question out of the set we are on, plus the actual document question number
+    document.getElementById('question-tracker').innerText = `Question ${currentQ + 1} of ${currentQuizSet.length}`;
+    document.getElementById('question').innerHTML = `Q${q.qNum}. ${q.q}`;
     
     const optsEl = document.getElementById('options');
     optsEl.innerHTML = '';
@@ -1509,24 +1563,21 @@ function loadQuestion() {
 }
 
 function submitAnswer() {
-    const q = quizData[currentQ];
+    const q = currentQuizSet[currentQ];
     const btns = document.querySelectorAll('.option-btn');
-    btns.forEach(b => b.disabled = true); // Lock all answers
+    btns.forEach(b => b.disabled = true); 
     document.getElementById('submit-btn').style.display = 'none';
 
     const isCorrect = q.a.includes(selectedIdx);
 
-    // Update Score & Attempts
     attemptedCount++;
     if (isCorrect) {
         score++;
     }
     
-    // Update Scoreboard UI
     document.getElementById('score').innerText = score;
     document.getElementById('attempted').innerText = attemptedCount;
 
-    // Highlight Correct/Wrong
     if (isCorrect) {
         btns[selectedIdx].classList.add('correct');
     } else {
@@ -1536,7 +1587,6 @@ function submitAnswer() {
         });
     }
 
-    // Show Explanation
     const expEl = document.getElementById('explanation');
     expEl.innerHTML = `<strong>${isCorrect ? 'Correct!' : 'Incorrect.'}</strong><br><br>${q.e}`;
     expEl.style.display = 'block';
@@ -1548,25 +1598,20 @@ function nextQuestion() {
     loadQuestion();
 }
 
-// 4. FINISH QUIZ LOGIC
 function finishQuiz() {
     document.getElementById('quiz-area').style.display = 'none';
     document.getElementById('result-area').style.display = 'block';
 
-    const unattemptedCount = quizData.length - attemptedCount;
+    const unattemptedCount = currentQuizSet.length - attemptedCount;
 
-    // Populate Results
     document.getElementById('final-score').innerText = score;
     document.getElementById('final-attempted').innerText = attemptedCount;
     
     const unattemptedText = document.getElementById('unattempted-text');
     if (unattemptedCount > 0) {
-        unattemptedText.innerText = `You left ${unattemptedCount} questions unattempted (out of ${quizData.length} total).`;
+        unattemptedText.innerText = `You left ${unattemptedCount} questions unattempted (out of ${currentQuizSet.length} total in this set).`;
         unattemptedText.style.display = 'block';
     } else {
-        unattemptedText.style.display = 'none'; // Hide if they did everything
+        unattemptedText.style.display = 'none'; 
     }
 }
-
-// Start the quiz
-loadQuestion();
