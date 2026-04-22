@@ -316,7 +316,7 @@ Correct Answer: A
 Detailed Solution: Uptime (availability) and response/recovery metrics measure SLA compliance. The others are irrelevant or implementation details.
 
 QUESTION 35:
-A cloud service is guaranteed to handle 10,000 requests/hour with 99.5% success. How many failed requests per hour are acceptable under SLA?
+One cloud service is guaranteed to handle 10,000 requests/hour with 99.5% success. How many failed requests per hour are acceptable under SLA?
 A) 5
 B) 10
 C) 50
@@ -352,7 +352,7 @@ Correct Answer: B
 Detailed Solution: Object storage (S3/GCS) with Hadoop/Spark connectors is designed for large binary blobs and parallel processing; RDBMS and single block volumes are unsuitable for scale.
 
 QUESTION 39:
-A MapReduce job is designed to count word frequencies in 2 TB of text files. The mapper output is 1.5 TB (including overhead), and after the shuffle and sort phase, the data is 1.3 TB. During the reduce phase, a node runs out of disk space during the merge operation. Which of the following is the most likely cause and solution?
+One MapReduce job is designed to count word frequencies in 2 TB of text files. The mapper output is 1.5 TB (including overhead), and after the shuffle and sort phase, the data is 1.3 TB. During the reduce phase, a node runs out of disk space during the merge operation. Which of the following is the most likely cause and solution?
 A) The mapper logic is inefficient; rewrite the mapper function
 B) The combiner phase didn't run; ensure combiner is explicitly configured to compress intermediate data locally
 C) The shuffle and sort didn't deduplicate keys; increase the number of reducers
@@ -390,7 +390,7 @@ Correct Answer: C
 Detailed Solution: Disk limits are strictly enforced by VM size (SKU). OS and region do not affect disk count limits.
 
 QUESTION 43:
-A Linux VM requires passwordless authentication. What is the MOST SECURE approach beyond SSH keys?
+One Linux VM requires passwordless authentication. What is the MOST SECURE approach beyond SSH keys?
 A) SSH public key authentication with file permissions (600)
 B) Azure AD SSH login through Azure Bastion or VM extension
 C) Service Principal with client secret
@@ -464,7 +464,7 @@ Detailed Solution: DHCP agent provides IP allocation to instances. Without it, n
 Assignment-Week 5
 
 QUESTION 51:
-A cloud provider guarantees 99% availability. An application is scheduled to run Y hours per day for 20 days. The observed downtime is 4 hours, and the SLA is violated. What is the maximum possible value of Y?
+One cloud provider guarantees 99% availability. An application is scheduled to run Y hours per day for 20 days. The observed downtime is 4 hours, and the SLA is violated. What is the maximum possible value of Y?
 A) Y < 20
 B) Y ≥ 20.2
 C) Y = 24
@@ -536,7 +536,7 @@ Correct Answer: C
 Detailed Solution: Containers share the host operating system kernel, which reduces overhead and enables higher workload density. Virtual machines emulate hardware, providing stronger isolation.
 
 QUESTION 59:
-A cloud provider runs 8 physical servers hosting 32 VMs with an average CPU utilization of 50%. After energy-aware consolidation, the VMs are migrated to 5 servers, increasing average CPU utilization to 75%. Which consequence is most likely?
+One cloud provider runs 8 physical servers hosting 32 VMs with an average CPU utilization of 50%. After energy-aware consolidation, the VMs are migrated to 5 servers, increasing average CPU utilization to 75%. Which consequence is most likely?
 A) Total power consumption decreased; SLA violation risk increased
 B) Total power consumption increased; SLA improved
 C) Total power consumption decreased; SLA unaffected
@@ -565,7 +565,7 @@ Correct Answer: D
 Detailed Solution: Replaying a captured token allows the attacker to impersonate the legitimate user, this undermines authenticity (the assurance that an entity is who it claims to be).
 
 QUESTION 62:
-A well-crafted phishing email (that impersonates a bank and convinces a user to provide credentials) can affect which of the following?
+One well-crafted phishing email (that impersonates a bank and convinces a user to provide credentials) can affect which of the following?
 A) Confidentiality
 B) Availability
 C) Integrity
@@ -619,7 +619,7 @@ Correct Answer: B
 Detailed Solution: Statement I is false because authentication (not authorization) verifies identity. Statement II is true.
 
 QUESTION 68:
-A start-up wants to deploy a custom web application. They want to upload their application code and have the provider manage the underlying OS patches, middleware, and runtime, while still allowing them to configure application settings and scale instances. Which cloud service model best fits?
+One start-up wants to deploy a custom web application. They want to upload their application code and have the provider manage the underlying OS patches, middleware, and runtime, while still allowing them to configure application settings and scale instances. Which cloud service model best fits?
 A) SaaS
 B) IaaS
 C) PaaS
@@ -628,7 +628,7 @@ Correct Answer: C
 Detailed Solution: Platform-as-a-Service (PaaS) provides a managed runtime and middleware so developers can deploy applications without managing OS-level patching or runtime installation.
 
 QUESTION 69:
-A country’s data protection law requires that all personal data of its citizens must be stored and processed only within that country’s geographic boundaries, even when using cloud services. This concern is most closely related to which cloud security risk category?
+One country’s data protection law requires that all personal data of its citizens must be stored and processed only within that country’s geographic boundaries, even when using cloud services. This concern is most closely related to which cloud security risk category?
 A) Regulatory Compliance & Audit
 B) Data Location
 C) Disaster Recovery & Business Continuity
@@ -675,7 +675,7 @@ Correct Answer: C
 Detailed Solution: Installed app count is unrelated to the specific task's energy/delay trade-off.
 
 QUESTION 74:
-A university deploys a small server cluster inside its campus cafeteria to support AR-based menu visualization and nutrition analysis for students’ smartphones. Computation is offloaded from phones to this on-site cluster to minimize delay. This on-site resource is best described as:
+One university deploys a small server cluster inside its campus cafeteria to support AR-based menu visualization and nutrition analysis for students’ smartphones. Computation is offloaded from phones to this on-site cluster to minimize delay. This on-site resource is best described as:
 A) A global hyperscale cloud data center
 B) A cloudlet placed close to end users
 C) A personal hotspot on a student’s phone
@@ -684,7 +684,7 @@ Correct Answer: B
 Detailed Solution: A cloudlet is a small-scale data center placed near mobile users to support low-latency offloading.
 
 QUESTION 75:
-A mobile banking app uses MCC to process transactions on cloud servers. Data is transmitted over the Internet from the app to the cloud. Which of the following is the most critical security concern in this context?
+One mobile banking app uses MCC to process transactions on cloud servers. Data is transmitted over the Internet from the app to the cloud. Which of the following is the most critical security concern in this context?
 A) The screen size of the mobile device is too small
 B) The app icon resolution being too high
 C) Excessive variety of smartphone colors available in the market
@@ -720,7 +720,7 @@ Correct Answer: D
 Detailed Solution: Processing such massive data efficiently requires leveraging parallel and distributed computing architectures by partitioning data.
 
 QUESTION 79:
-A startup processes global high-resolution satellite imagery and LiDAR data to detect deforestation patterns. When migrating to a geospatial cloud platform, which challenge is most fundamental from a data-processing perspective?
+One startup processes global high-resolution satellite imagery and LiDAR data to detect deforestation patterns. When migrating to a geospatial cloud platform, which challenge is most fundamental from a data-processing perspective?
 A) Extremely high computation and storage demands for massive raster and vector datasets
 B) The general lack of public interest in environmental topics
 C) The impossibility of running any GIS software on cloud infrastructure
@@ -729,7 +729,7 @@ Correct Answer: A
 Detailed Solution: Satellite imagery and LiDAR produce huge raster and vector datasets requiring high-performance computing, large storage, and parallel processing.
 
 QUESTION 80:
-A smart healthcare system uses wearable sensors to continuously monitor patients’ ECG signals and detect abnormalities in real time. Alerts must be raised within a few hundred milliseconds. Which combination is most appropriate to meet these latency requirements?
+One smart healthcare system uses wearable sensors to continuously monitor patients’ ECG signals and detect abnormalities in real time. Alerts must be raised within a few hundred milliseconds. Which combination is most appropriate to meet these latency requirements?
 A) Batch analytics in a distant cloud region + periodic manual report downloads
 B) Pure cloud processing over a high-latency satellite link
 C) Fog/Edge nodes performing local pre-processing + low-latency wireless access network (e.g., 5G)
@@ -812,7 +812,7 @@ Correct Answer: A
 Detailed Solution: Without filtering, aggregation, or preprocessing, storing and analyzing all raw data causes storage and computation costs to increase quickly.
 
 QUESTION 89:
-Consider the following statements about virtualization in a Sensor Cloud: Statement 1: Virtual sensors can be created by aggregating, filtering, or combining data from multiple physical sensors. Statement 2: Virtualization in a Sensor Cloud allows multiple applications to share the same underlying physical sensor infrastructure. Which option is correct?
+Study the following statements about virtualization in a Sensor Cloud: Statement 1: Virtual sensors can be created by aggregating, filtering, or combining data from multiple physical sensors. Statement 2: Virtualization in a Sensor Cloud allows multiple applications to share the same underlying physical sensor infrastructure. Which option is correct?
 A) Statement 1 is True and Statement 2 is False
 B) Statement 1 is False and Statement 2 is True
 C) Both statements are True
@@ -1182,7 +1182,7 @@ Correct Answer: C
 Detailed Solution: DSRC (802.11p) is designed for vehicular environments with low latency and high mobility, making it suitable for real-time safety communication.
 
 QUESTION 129:
-A major benefit of real-time mobility analytics in urban transport systems is:
+One major benefit of real-time mobility analytics in urban transport systems is:
 A) Eliminating the need for traffic laws
 B) Dynamic traffic signal optimization based on live vehicle density
 C) Reducing vehicle manufacturing costs
