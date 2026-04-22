@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPTEL Cloud Computing Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="header">
+            <h2>NPTEL Cloud Computing Quiz</h2>
+            <div class="score-board">Score: <span id="score">0</span> / <span id="attempted">0</span> Attempted</div>
+        </div>
+        
+        <div id="quiz-area">
+            <div id="question" class="question-text">Loading questions...</div>
+            <div id="options" class="options-container"></div>
+            
+            <div class="button-group">
+                <button id="submit-btn" class="btn primary-btn" disabled onclick="submitAnswer()">Submit Answer</button>
+                <button id="next-btn" class="btn secondary-btn" style="display:none;" onclick="nextQuestion()">Next Question</button>
+                <button id="finish-btn" class="btn danger-btn" onclick="finishQuiz()">Finish Quiz Early</button>
+            </div>
+            
+            <div id="explanation" class="explanation-box" style="display:none;"></div>
+        </div>
+        
+        <div id="result-area" style="display:none;">
+            <h3>Quiz Complete!</h3>
+            <p class="final-score-text">Your final score is: <span id="final-score"></span> out of <span id="final-attempted"></span> attempted questions.</p>
+            <div id="unattempted-text" class="unattempted-box"></div>
+            
+            
+            <br><br>
+            <button class="btn secondary-btn" onclick="location.reload()">Restart Quiz</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
