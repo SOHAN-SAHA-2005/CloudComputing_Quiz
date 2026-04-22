@@ -226,7 +226,7 @@ Correct Answer: C
 Detailed Solution: StAX is a pull-based, event-driven XML parser that allows applications to control when and how XML events are processed. It uses significantly less memory than DOM and provides more flexible control than SAX, making it the most appropriate choice for parsing very large XML files in memory-constrained environments.
 
 QUESTION 25:
-A hypervisor with hardware-assisted virtualization shows 40% CPU usage while VMs report only 15% utilization. What explains the 25% gap?
+One hypervisor with hardware-assisted virtualization shows 40% CPU usage while VMs report only 15% utilization. What explains the 25% gap?
 A) The hypervisor isn't using hardware extensions; it's relying on binary translation.
 B) Context switching,memory management,and I/O emulation overhead—normal in virtualized environments.
 C) Unmodified OS cannot fully utilize hardware virtualization.
